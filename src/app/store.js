@@ -1,8 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
-});
+import { uiMdlw } from '../redux/middleware/ui'
+import { uiReducer } from '../redux/reducers/ui'
+
+const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 })
+
+export const store = createStore(
+  uiReducer,
+  composeEnhancers(
+    applyMiddleware(...uiMdlw)
+  )
+)
